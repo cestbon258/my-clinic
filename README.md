@@ -14,7 +14,6 @@
 # Features
 - [Installation](#installation)
 - [Building Locally](#building-locally)
-- [Features](#features)
 # Installation 
 * [Node JS](https://nodejs.org/en/)
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
