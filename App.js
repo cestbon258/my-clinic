@@ -1,12 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, component } from 'react';
-import { StyleSheet, Button, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Button, Text, View, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import LoginScreen from './src/pages/Login';
 import SignUpScreen from './src/pages/SignUp';
+import RecordScreen from './src/pages/Record';
+import RecordDetailsScreen from './src/pages/RecordDetails';
 
 // const getFullName = (test) => {
 // 	console.log(test);
@@ -53,39 +55,94 @@ const Stack = createStackNavigator();
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			isAuth: false
+		};
 	}
+
+	checkAuth = async () => {
+		let loginDetails = await AsyncStorage.getItem('loginDetails');
+		let ld = JSON.parse(loginDetails);
+
+		if (ld) {
+			this.state.isAuth = true;
+			console.log(this.state.isAuth);
+		}
+	};
+
+	componentWillMount() {
+		this.checkAuth();
+	}
+
 	render() {
 		return (
 			<NavigationContainer>
-				<Stack.Navigator initialRouteName="Login">
-					<Stack.Screen
-						name="Login"
-						options={{
-							title: 'My Clinic',
-							headerStyle: {
-								backgroundColor: '#f4511e'
-							},
-							headerTintColor: '#fff',
-							headerTitleStyle: {
-								fontWeight: 'bold'
-							}
-						}}
-						component={LoginScreen}
-					/>
-					<Stack.Screen
-						name="SignUp"
-						options={{
-							title: 'My Clinic',
-							headerStyle: {
-								backgroundColor: '#f4511e'
-							},
-							headerTintColor: '#fff',
-							headerTitleStyle: {
-								fontWeight: 'bold'
-							}
-						}}
-						component={SignUpScreen}
-					/>
+				<Stack.Navigator>
+					{this.state.isAuth == true ? (
+					<>
+						<Stack.Screen
+							name="Login"
+							options={{
+								title: 'My Clinic'
+								// headerStyle: {
+								// 	backgroundColor: '#f4511e'
+								// },
+								// headerTintColor: '#fff',
+								// headerTitleStyle: {
+								// 	fontWeight: 'bold'
+								// }
+							}}
+							component={LoginScreen}
+						/>
+						<Stack.Screen
+							name="SignUp"
+							// options={{
+							// 	title: 'Login',
+							// 	headerStyle: {
+							// 		backgroundColor: '#f4511e'
+							// 	},
+							// 	headerTintColor: '#fff',
+							// 	headerTitleStyle: {
+							// 		fontWeight: 'bold'
+							// 	}
+							// }}
+							component={SignUpScreen}
+						/>
+					</> 
+					) : ( 
+					<>
+						<Stack.Screen
+							name="Record"
+							options={{
+								title: 'My Clinic',
+								// headerStyle: {
+								// 	backgroundColor: '#f4511e'
+								// },
+								// headerTintColor: '#fff',
+								// headerTitleStyle: {
+								// 	fontWeight: 'bold'
+								// },
+								headerLeft: null
+							}}
+							component={RecordScreen}
+						/>
+						<Stack.Screen
+							name="RecordDetails"
+							options={{
+								title: 'Record Details'
+								// headerStyle: {
+								// 	backgroundColor: '#f4511e'
+								// },
+								// headerTintColor: '#fff',
+								// headerTitleStyle: {
+								// 	fontWeight: 'bold'
+								// },
+								// headerLeft: null
+							}}
+							component={RecordDetailsScreen}
+						/>
+					</> 
+					)}
 				</Stack.Navigator>
 			</NavigationContainer>
 		);

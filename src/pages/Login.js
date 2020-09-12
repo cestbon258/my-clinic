@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Button, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Button, Text, View, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
 
 class LoginScreen extends React.Component {
 	constructor(props) {
@@ -32,11 +32,20 @@ class LoginScreen extends React.Component {
 			.then((response) => response.json())
 			.then((res) => {
 				if (res.success === true) {
-					alert(res.data.email);
-					// var username = res.message;
-					// AsyncStorage.setItem('username', username);
-					// this.props.navigation.navigate('SignUp');
+					// alert(res.data.email);
+					console.log(res.data.email);
+
+					var user = res.data.email;
+					var loginDetails = {
+						isAuth: true,
+						email: user
+					};
+					// save email to storage
+					AsyncStorage.setItem('loginDetails', JSON.stringify(loginDetails));
+					// navigate to
+					this.props.navigation.navigate('Record');
 				} else {
+					console.log(res.data.message);
 					alert(res.data.message);
 				}
 			})
@@ -94,6 +103,14 @@ class LoginScreen extends React.Component {
 						Sign Up
 					</Text>
 				</TouchableOpacity>
+
+				{/* <Text style={{ color: 'red' }} onPress={() => this.props.navigation.navigate('Record')}>
+					Record
+				</Text> */}
+
+				{/* <Text style={{ color: 'red' }} onPress={() => this.props.navigation.navigate('RecordDetails')}>
+					Record Details
+				</Text> */}
 			</View>
 		);
 	}

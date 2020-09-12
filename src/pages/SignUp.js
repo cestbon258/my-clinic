@@ -8,7 +8,8 @@ import {
 	TextInput,
 	TouchableOpacity,
 	ViewBase,
-	TouchableHighlightBase
+	TouchableHighlightBase,
+	AsyncStorage
 } from 'react-native';
 
 class SignUpScreen extends React.Component {
@@ -130,13 +131,13 @@ class SignUpScreen extends React.Component {
 					</Text>
 				</TouchableOpacity>
 
-				<Text style={{ color: 'gray' }}>or</Text>
+				{/* <Text style={{ color: 'gray' }}>or</Text>
 
 				<TouchableOpacity style={styles.button}>
 					<Text style={styles.buttonText} onPress={() => this.props.navigation.navigate('Login')}>
 						Back to Login
 					</Text>
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</View>
 		);
 	}
